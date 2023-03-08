@@ -1,0 +1,61 @@
+/* Write your CSS here */
+.app-container {
+  background-color: #161625;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.app-body-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  max-width: 1140px;
+  width: 80%;
+}
+.logo-container {
+  display: flex;
+  align-items: center;
+  margin-top: 30px;
+}
+.logo {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.logo-heading {
+  color: #2cc6c6;
+  font-size: 25px;
+  font-weight: 600;
+  font-family: 'Roboto';
+}
+.each-heading {
+  color: #cbd5e1;
+  font-size: 25px;
+  font-weight: 500;
+  font-family: 'roboto';
+  line-height: 1.5;
+}
+.each-bg-container {
+  display: flex;
+  flex-direction: column;
+  background-color: #1c1c2b;
+  padding: 20px;
+  margin-bottom: 20px;
+}
+.loading-view-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+}
+.failure-view-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.failure-view-img {
+  width: 60%;
+  margin: 10px;
+}
