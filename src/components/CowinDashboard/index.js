@@ -21,9 +21,11 @@ class CowinDashboard extends Component {
   }
 
   getVaccinationData = async () => {
-    this.setState({apiStatus: apiStatusConstants.loading})
+    this.setState({apiStatus: apiStatusConstants.inProgress})
 
-    const response = await fetch('https://apis.ccbp.in/covid-vaccination-data')
+    const covidVaccinationDataApiUrl =
+      'https://apis.ccbp.in/covid-vaccination-data'
+    const response = await fetch(covidVaccinationDataApiUrl)
 
     if (response.ok === true) {
       const fetchedData = await response.json()
@@ -35,8 +37,16 @@ class CowinDashboard extends Component {
             dose2: eachDay.dose_2,
           }),
         ),
-        vaccinationByAgeData: fetchedData.vaccination_by_age,
-        vaccinationByGenderData: fetchedData.vaccination_by_gender,
+        vaccinationByAgeData: fetchedData.vaccination_by_age.map(eachRange => ({
+          age: eachRange.age,
+          count: eachRange.count,
+        })),
+        vaccinationByGenderData: fetchedData.vaccination_by_gender.map(
+          eachType => ({
+            gender: eachType.gender,
+            count: eachType.count,
+          }),
+        ),
       }
       this.setState({
         vaccinationDetails: updatedData,
@@ -58,22 +68,13 @@ class CowinDashboard extends Component {
 
     return (
       <>
-        <div className="each-bg-container">
-          <h1 className="each-heading">Vaccination Coverage</h1>
-          <VaccinationCoverage
-            lastWeekVaccinationData={lastWeekVaccinationData}
-          />
-        </div>
-        <div className="each-bg-container">
-          <h1 className="each-heading">Vaccination by gender</h1>
-          <VaccinationByGender
-            vaccinationByGenderData={vaccinationByGenderData}
-          />
-        </div>
-        <div className="each-bg-container">
-          <h1 className="each-heading">Vaccination by Age</h1>
-          <VaccinationByAge vaccinationByAgeData={vaccinationByAgeData} />
-        </div>
+        <VaccinationCoverage
+          lastWeekVaccinationData={lastWeekVaccinationData}
+        />
+        <VaccinationByGender
+          vaccinationByGenderData={vaccinationByGenderData}
+        />
+        <VaccinationByAge vaccinationByAgeData={vaccinationByAgeData} />
       </>
     )
   }
@@ -81,11 +82,11 @@ class CowinDashboard extends Component {
   renderFailureView = () => (
     <div className="failure-view-container">
       <img
-        className="failure-view-img"
+        className="failure-image"
         src="https://assets.ccbp.in/frontend/react-js/api-failure-view.png"
         alt="failure view"
       />
-      <h1>Something went wrong</h1>
+      <h1 className="failure-text">Something went wrong</h1>
     </div>
   )
 
@@ -103,7 +104,7 @@ class CowinDashboard extends Component {
         return this.renderSuccessView()
       case apiStatusConstants.failure:
         return this.renderFailureView()
-      case apiStatusConstants.loading:
+      case apiStatusConstants.inProgress:
         return this.renderLoadingView()
       default:
         return null
@@ -113,7 +114,7 @@ class CowinDashboard extends Component {
   render() {
     return (
       <div className="app-container">
-        <div className="app-body-container">
+        <div className="app-responsive-container">
           <div className="logo-container">
             <img
               className="logo"
@@ -122,7 +123,7 @@ class CowinDashboard extends Component {
             />
             <h1 className="logo-heading">Co-WIN</h1>
           </div>
-          <h1 className="each-heading">CoWIN Vaccination in India</h1>
+          <h1 className="heading">CoWIN Vaccination in India</h1>
           {this.renderVaccinationDetailsView()}
         </div>
       </div>
